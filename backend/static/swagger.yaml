@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: Heart Disease Prediction API
+  version: 1.0.0
+paths:
+  /predict:
+    post:
+      summary: Prediz se um paciente tem doença cardíaca
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Age:
+                  type: integer
+                Sex:
+                  type: string
+                ChestPainType:
+                  type: string
+                RestingBP:
+                  type: integer
+                Cholesterol:
+                  type: integer
+                FastingBS:
+                  type: integer
+                RestingECG:
+                  type: string
+                MaxHR:
+                  type: integer
+                ExerciseAngina:
+                  type: string
+                Oldpeak:
+                  type: number
+                ST_Slope:
+                  type: string
+              required:
+                - Age
+                - Sex
+                - ChestPainType
+                - RestingBP
+                - Cholesterol
+                - FastingBS
+                - RestingECG
+                - MaxHR
+                - ExerciseAngina
+                - Oldpeak
+                - ST_Slope
+            examples:
+              paciente_sem_doenca:
+                summary: Paciente saudável (sem doença cardíaca)
+                value:
+                  Age: 45
+                  Sex: "M"
+                  ChestPainType: "ATA"
+                  RestingBP: 120
+                  Cholesterol: 180
+                  FastingBS: 0
+                  RestingECG: "Normal"
+                  MaxHR: 170
+                  ExerciseAngina: "N"
+                  Oldpeak: 0.0
+                  ST_Slope: "Up"
+              paciente_com_doenca:
+                summary: Paciente com doença cardíaca
+                value:
+                  Age: 60
+                  Sex: "F"
+                  ChestPainType: "ASY"
+                  RestingBP: 150
+                  Cholesterol: 250
+                  FastingBS: 1
+                  RestingECG: "ST"
+                  MaxHR: 110
+                  ExerciseAngina: "Y"
+                  Oldpeak: 2.3
+                  ST_Slope: "Down"
+      responses:
+        '200':
+          description: Resultado da predição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  prediction:
+                    type: integer
+                    description: 0 = sem doença, 1 = com doença
+                  probability:
+                    type: number
+                    format: float
+        '400':
+          description: Requisição inválida
+        '500':
+          description: Erro interno do servidor
